@@ -11,6 +11,7 @@ import ocr_ut
 import cvcrop
 import blob
 import get_peg
+import pandas as pd
 
 #certifi.where()
 #'/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/certifi/cacert.pem'
@@ -54,17 +55,26 @@ print(len(stock_list))
 #printme('test')
 #pow2 = []
 file = open("mystock.txt","w")
- 
+file_name = "mystock.txt"
+
+data_list = []
+
 for x in range(len(stock_list)):
-    #print(stock_list[x])
+    code = stock_list[x]
     full_url = get_url(stock_list[x])
-    text = get_peg.get_peg_from_url(full_url)
     peg = 0.0
     try:
-        peg = float(text.replace(" ", "")) * 0.01
+        text = get_peg.get_peg_from_url(full_url)
+        peg = float(text.replace(" ", "")) * 1.00
     except:
         print ("error message!")
     s2 = "{:.2f}".format( peg ) # new
-    file.write(file_name + '\t\t' + s2 +'\n') 
+    data_list.append([code,float(peg)])
+    file.write(code + '\t\t' + s2 +'\n') 
+
+df = pd.DataFrame(data_list,columns=['Code','PEG'])
+final_df = df.sort_values(by='PEG')
+print(final_df)
+final_df.to_csv('peg.csv', sep='\t', encoding='utf-8')
 
 file.close() 

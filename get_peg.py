@@ -40,7 +40,7 @@ def get_peg_from_url(url):
     page = get_webpage(url)
     data = scrape(page)
     #print(data)
-    start = data.find("Fz(s) Fw(500) Ta(end)")
+    #start = data.find("Fz(s) Fw(500) Ta(end)")
     #print(start)
     rate = data[-20:]
     #print(rate)
