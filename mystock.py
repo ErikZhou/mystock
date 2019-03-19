@@ -10,6 +10,7 @@ import certifi
 import ocr_ut
 import cvcrop
 import blob
+import get_peg
 
 #certifi.where()
 #'/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/certifi/cacert.pem'
@@ -22,17 +23,11 @@ def printme( str ):
    print (str)
    return;
 
-def down_file( name ):
+def get_url( name ):
    # Download the file from `url` and save it locally under `file_name`:
    #url='https://www.nasdaq.com//charts/BABA_peg.jpeg'
-   url='https://www.nasdaq.com//charts/' + name + '_peg.jpeg'
-   file_name= name + '_peg.jpeg'
-   with urllib.request.urlopen(url,cafile=pemfile) as response, open(file_name, 'wb') as out_file:
-       data = response.read() # a `bytes` object
-       out_file.write(data)
-       print(file_name)
-       #ocr.ocrdigits(file_name)
-   return file_name;
+   url='https://finance.yahoo.com/quote/' + name + '/key-statistics'
+   return url;
 
 path = 'stock.txt'
 days_file = open(path,'r')
@@ -62,11 +57,8 @@ file = open("mystock.txt","w")
  
 for x in range(len(stock_list)):
     #print(stock_list[x])
-    file_name = down_file(stock_list[x])
-    #ocr.ocrdigits(file_name)
-    cvcrop.imcrop(file_name)
-    blob.imsplit(file_name)
-    text = ocr_ut.im2string(file_name)
+    full_url = get_url(stock_list[x])
+    text = get_peg.get_peg_from_url(full_url)
     peg = 0.0
     try:
         peg = float(text.replace(" ", "")) * 0.01
