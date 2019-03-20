@@ -15,6 +15,13 @@ import csv_splitter
 import pandas as pd
 import os
 import glob
+from multiprocessing import Pool
+
+def f(x):
+    return x*x
+
+p = Pool(5)
+print(p.map(f, [1, 2, 3]))
 
 #certifi.where()
 #'/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/certifi/cacert.pem'
@@ -34,7 +41,37 @@ def get_url( name ):
    return url;
 
 def get_peg_from_csv( filename ):
-   return;
+    csv_file = filename
+    df = pd.read_csv(csv_file)
+    data_list = []
+    for i in range(df.shape[0]):
+        print(df.iloc[i,0])
+        process = "{:.2f}".format( 100.0 * i / df.shape[0] )
+        print(process)
+        print('i / total = ' + str(i) + ' / ' + str(df.shape[0]))
+    #if i > 10:
+     #   break
+
+        code = df.iloc[i,0]
+        full_url = get_url(code)
+        peg = 0.0
+        try:
+            text = get_peg.get_peg_from_url(full_url)
+            peg = float(text.replace(" ", "")) * 1.00
+        except:
+            print ("error message!")
+
+        s2 = "{:.2f}".format( peg ) # new
+        if peg > 0.001:
+            data_list.append([code,float(peg)])
+            #file.write(code + '\t\t' + s2 +'\n') 
+
+    df = pd.DataFrame(data_list,columns=['Code','PEG'])
+    final_df = df.sort_values(by='PEG')
+    print(final_df)
+    final_df.to_csv('peg_' + filename + '.csv', sep='\t', encoding='utf-8')
+
+    return;
 
 cols = [0,1]
 #df = pd.read_csv("nasdaq-listed-symbols.csv",index_col=0, usecols=cols)
@@ -52,7 +89,12 @@ path = './'
 extension = 'csv'
 os.chdir(path)
 result = [i for i in glob.glob('output*.{}'.format(extension))]
-print(result)
+for x in result:
+    print(x)
+    #get_peg_from_csv(x)
+
+p = Pool(len(result))
+print(p.map(get_peg_from_csv, result))
 print('=======')
 
 path = 'stock.txt'
@@ -82,36 +124,11 @@ print(len(stock_list))
 file = open("mystock.txt","w")
 file_name = "mystock.txt"
 
-data_list = []
+
 
 #for x in range(len(stock_list)):
     #code = stock_list[x]
     #full_url = get_url(stock_list[x])
-for i in range(df.shape[0]):
-    print(df.iloc[i,0])
-    process = "{:.2f}".format( 100.0 * i / df.shape[0] )
-    print(process)
-    print('i / total = ' + str(i) + ' / ' + str(df.shape[0]))
-    #if i > 10:
-     #   break
 
-    code = df.iloc[i,0]
-    full_url = get_url(code)
-    peg = 0.0
-    try:
-        text = get_peg.get_peg_from_url(full_url)
-        peg = float(text.replace(" ", "")) * 1.00
-    except:
-        print ("error message!")
-
-    s2 = "{:.2f}".format( peg ) # new
-    if peg > 0.001:
-        data_list.append([code,float(peg)])
-        file.write(code + '\t\t' + s2 +'\n') 
-
-df = pd.DataFrame(data_list,columns=['Code','PEG'])
-final_df = df.sort_values(by='PEG')
-print(final_df)
-final_df.to_csv('peg.csv', sep='\t', encoding='utf-8')
 
 file.close() 
