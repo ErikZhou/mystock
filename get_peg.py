@@ -35,7 +35,7 @@ def get_rate(url):
 
 #if __name__ == "__main__":
 def get_peg_from_url(url):
-    print('begin')
+    #print('begin')
     #get_rate(URL)
     page = get_webpage(url)
     data = scrape(page)
@@ -45,13 +45,13 @@ def get_peg_from_url(url):
     rate = data[-20:]
     #print(rate)
     rate = rate[0:len(rate)-6]
-    print(rate)
+    #print(rate)
     index = rate.rfind('>')
     #print(index)
     #print(len(rate))
     rate = rate[index+1:len(rate)]
     print(rate)
-    print('end')
+    #print('end')
     return rate;
     
     #print(data.head())

@@ -11,7 +11,10 @@ import ocr_ut
 import cvcrop
 import blob
 import get_peg
+import csv_splitter
 import pandas as pd
+import os
+import glob
 
 #certifi.where()
 #'/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/certifi/cacert.pem'
@@ -29,6 +32,28 @@ def get_url( name ):
    #url='https://www.nasdaq.com//charts/BABA_peg.jpeg'
    url='https://finance.yahoo.com/quote/' + name + '/key-statistics'
    return url;
+
+def get_peg_from_csv( filename ):
+   return;
+
+cols = [0,1]
+#df = pd.read_csv("nasdaq-listed-symbols.csv",index_col=0, usecols=cols)
+csv_file = 'nasdaq-listed-symbols1.csv'
+df = pd.read_csv(csv_file)
+print(df)
+print('=======')
+print(df.shape)
+#for i in range(df.shape[0]):
+#    print(df.iloc[i,0])
+csv_splitter.split(open(csv_file, 'r'));
+print('=======')
+
+path = './'
+extension = 'csv'
+os.chdir(path)
+result = [i for i in glob.glob('output*.{}'.format(extension))]
+print(result)
+print('=======')
 
 path = 'stock.txt'
 days_file = open(path,'r')
@@ -59,18 +84,30 @@ file_name = "mystock.txt"
 
 data_list = []
 
-for x in range(len(stock_list)):
-    code = stock_list[x]
-    full_url = get_url(stock_list[x])
+#for x in range(len(stock_list)):
+    #code = stock_list[x]
+    #full_url = get_url(stock_list[x])
+for i in range(df.shape[0]):
+    print(df.iloc[i,0])
+    process = "{:.2f}".format( 100.0 * i / df.shape[0] )
+    print(process)
+    print('i / total = ' + str(i) + ' / ' + str(df.shape[0]))
+    #if i > 10:
+     #   break
+
+    code = df.iloc[i,0]
+    full_url = get_url(code)
     peg = 0.0
     try:
         text = get_peg.get_peg_from_url(full_url)
         peg = float(text.replace(" ", "")) * 1.00
     except:
         print ("error message!")
+
     s2 = "{:.2f}".format( peg ) # new
-    data_list.append([code,float(peg)])
-    file.write(code + '\t\t' + s2 +'\n') 
+    if peg > 0.001:
+        data_list.append([code,float(peg)])
+        file.write(code + '\t\t' + s2 +'\n') 
 
 df = pd.DataFrame(data_list,columns=['Code','PEG'])
 final_df = df.sort_values(by='PEG')
