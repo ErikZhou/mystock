@@ -2,16 +2,6 @@
 # coding: utf-8
 
 # In[ ]:
-
-
-import urllib.request
-import certifi
-#import ocr
-import ocr_ut
-import cvcrop
-import blob
-import get_peg
-import csv_splitter
 import pandas as pd
 import os
 import glob

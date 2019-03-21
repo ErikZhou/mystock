@@ -3,13 +3,6 @@
 
 # In[ ]:
 
-
-import urllib.request
-import certifi
-#import ocr
-import ocr_ut
-import cvcrop
-import blob
 import get_peg
 import csv_splitter
 import pandas as pd
@@ -40,7 +33,7 @@ result = [i for i in glob.glob('peg_output*.{}'.format(extension))]
 print('=======')
 
 csv_file = 'out.csv'
-
+os.remove(csv_file)
 fout=open(csv_file,"a")
 # first file:
 for line in open("peg_output_1.csv.csv"):

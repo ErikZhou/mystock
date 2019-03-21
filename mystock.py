@@ -6,8 +6,7 @@
 
 import urllib.request
 import certifi
-#import ocr
-import ocr_ut
+
 import cvcrop
 import blob
 import get_peg
@@ -22,11 +21,6 @@ def f(x):
 
 p = Pool(5)
 print(p.map(f, [1, 2, 3]))
-
-#certifi.where()
-#'/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/certifi/cacert.pem'
-
-pemfile = '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/certifi/cacert.pem'
 
 # Function definition is here
 def printme( str ):
@@ -62,8 +56,8 @@ def get_peg_from_csv( filename ):
             print ("error message!")
 
         s2 = "{:.2f}".format( peg ) # new
-        if peg > 0.001:
-            data_list.append([code,float(peg)])
+        #if peg > 0.001:
+        data_list.append([code,float(peg)])
             #file.write(code + '\t\t' + s2 +'\n') 
 
     df = pd.DataFrame(data_list,columns=['Code','PEG'])
@@ -75,7 +69,7 @@ def get_peg_from_csv( filename ):
 
 cols = [0,1]
 #df = pd.read_csv("nasdaq-listed-symbols.csv",index_col=0, usecols=cols)
-csv_file = 'nasdaq-listed-symbols1.csv'
+csv_file = 'nasdaq-listed-symbols.csv'
 df = pd.read_csv(csv_file)
 print(df)
 print('=======')
