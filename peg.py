@@ -13,18 +13,10 @@ import pandas as pd
 import os
 import glob
 from multiprocessing import Pool
+#!/usr/bin/python
 
-def f(x):
-    return x*x
+import sys, getopt
 
-p = Pool(5)
-print(p.map(f, [1, 2, 3]))
-
-# Function definition is here
-def printme( str ):
-   "This prints a passed string into this function"
-   print (str)
-   return;
 
 def get_url( name ):
    # Download the file from `url` and save it locally under `file_name`:
@@ -72,34 +64,29 @@ def get_peg_from_csv( filename ):
 
     return;
 
-cols = [0,1]
-#df = pd.read_csv("nasdaq-listed-symbols.csv",index_col=0, usecols=cols)
-csv_file = 'nasdaq-listed-symbols.csv'
-df = pd.read_csv(csv_file)
-print(df)
-print('=======')
-print(df.shape)
-#for i in range(df.shape[0]):
-#    print(df.iloc[i,0])
-csv_splitter.split(open(csv_file, 'r'),',',200);
-print('=======')
+def main(argv):
+   inputfile = ''
+   outputfile = ''
+   try:
+      opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+   except getopt.GetoptError:
+      print ('test.py -i <inputfile> -o <outputfile>')
+      sys.exit(2)
+   for opt, arg in opts:
+      if opt == '-h':
+         print ('test.py -i <inputfile> -o <outputfile>')
+         sys.exit()
+      elif opt in ("-i", "--ifile"):
+         inputfile = arg
+      elif opt in ("-o", "--ofile"):
+         outputfile = arg
+   print ('Input file is "', inputfile)
+   print ('Output file is "', outputfile)
+   get_peg_from_csv(inputfile)
 
-#path = './'
-#extension = 'csv'
-#os.chdir(path)
-#result = [i for i in glob.glob('output*.{}'.format(extension))]
-#jobs = []
-#for x in result:
-#    print(x)
-#    jobs.append(x)
-    #get_peg_from_csv(x)
+if __name__ == "__main__":
+   main(sys.argv[1:])
 
-
-#length = len(jobs)
-#print(length)
-#print(jobs)
-#p = Pool(len(jobs))
-#p.map(get_peg_from_csv, jobs)
 
 
 

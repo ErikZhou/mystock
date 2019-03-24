@@ -33,7 +33,9 @@ result = [i for i in glob.glob('peg_output*.{}'.format(extension))]
 print('=======')
 
 csv_file = 'out.csv'
-os.remove(csv_file)
+if os.path.exists(csv_file):
+    # path exists
+    os.remove(csv_file)
 fout=open(csv_file,"a")
 # first file:
 for line in open("peg_output_1.csv.csv"):
