@@ -3,6 +3,9 @@ import requests     # Requests will allow us to access the website via HTTP requ
 import pandas as pd # A standard tabular data manipulation library
 from bs4 import BeautifulSoup
 import sys 
+import time
+import datetime
+
 
 #https://finance.yahoo.com/quote/AAPL/analysis
 URL = 'https://finance.yahoo.com/quote/AAPL/analysis'
@@ -46,11 +49,14 @@ def get_web(url):
 #if __name__ == "__main__":
 def get_average_from_url(url):
     #print('begin')
+    start = datetime.datetime.now()
     print(url)
     #get_rate(URL)
     cols = get_web(url)
     #page = get_webpage(url)
     #print('get_average_from_url end')
+    end = datetime.datetime.now()
+    print ('get_average_from_url cost(s)=',(end-start).seconds)
     return cols
     
     #print(data.head())

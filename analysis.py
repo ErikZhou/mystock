@@ -13,6 +13,8 @@ import pandas as pd
 import os
 import glob
 from multiprocessing import Pool
+import datetime
+
 #!/usr/bin/python
 
 import sys, getopt
@@ -50,7 +52,9 @@ def get_peg_from_csv( filename ):
         current = 0.0
         mean = 0.0
         try:
+           
             arr = get_average.get_average_from_url(full_url)
+           
             #print('arr=')
             #print(arr)
             current = arr[0]
@@ -71,8 +75,8 @@ def get_peg_from_csv( filename ):
         data_list.append([code,peg,current,mean,increase])
             #file.write(code + '\t\t' + s2 +'\n') 
 
-    df2 = pd.DataFrame(data_list,columns=['Code','PEG','Current','Mean','Increase(%)'])
-    final_df = df2.sort_values(by='Increase(%)')
+    df2 = pd.DataFrame(data_list,columns=['Code','PEG','Current','Mean','Increase'])
+    final_df = df2.sort_values(by='Increase')
     #print(final_df)
     name = filename[filename.rfind('/')+1: len(filename)]
     print('name=',name)
@@ -101,7 +105,10 @@ def main(argv):
          outputfile = arg
    print ('Input file is "', inputfile)
    print ('Output file is "', outputfile)
+   start = datetime.datetime.now()
    get_peg_from_csv(inputfile)
+   end = datetime.datetime.now()
+   print ('get_peg_from_csv cost(s)=',(end-start).seconds)
 
 if __name__ == "__main__":
    main(sys.argv[1:])
