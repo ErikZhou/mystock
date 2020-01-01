@@ -74,7 +74,7 @@ def get_peg_from_csv( filename ):
 
 cols = [0,1]
 #df = pd.read_csv("nasdaq-listed-symbols.csv",index_col=0, usecols=cols)
-csv_file = 'nasdaq-listed-symbols.csv'
+csv_file = 'data/nasdaq-listed-symbols.csv'
 df = pd.read_csv(csv_file)
 print(df)
 print('=======')
@@ -84,22 +84,22 @@ print(df.shape)
 csv_splitter.split(open(csv_file, 'r'),',',200);
 print('=======')
 
-#path = './'
-#extension = 'csv'
-#os.chdir(path)
-#result = [i for i in glob.glob('output*.{}'.format(extension))]
-#jobs = []
-#for x in result:
-#    print(x)
-#    jobs.append(x)
-    #get_peg_from_csv(x)
+path = './'
+extension = 'csv'
+os.chdir(path)
+result = [i for i in glob.glob('output*.{}'.format(extension))]
+jobs = []
+for x in result:
+    print(x)
+    jobs.append(x)
+    get_peg_from_csv(x)
 
 
-#length = len(jobs)
-#print(length)
-#print(jobs)
-#p = Pool(len(jobs))
-#p.map(get_peg_from_csv, jobs)
+length = len(jobs)
+print(length)
+print(jobs)
+p = Pool(len(jobs))
+p.map(get_peg_from_csv, jobs)
 
 
 
