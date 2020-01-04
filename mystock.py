@@ -84,6 +84,7 @@ print(df.shape)
 csv_splitter.split(open(csv_file, 'r'),',',200);
 print('=======')
 
+"""
 path = './'
 extension = 'csv'
 os.chdir(path)
@@ -100,6 +101,6 @@ print(length)
 print(jobs)
 p = Pool(len(jobs))
 p.map(get_peg_from_csv, jobs)
-
+"""
 
 
