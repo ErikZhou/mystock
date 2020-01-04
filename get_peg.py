@@ -39,6 +39,9 @@ def get_peg_from_url(url):
     #get_rate(URL)
     page = get_webpage(url)
     data = scrape(page)
+    if( data == None):
+        return '888' # meanings not found the page
+
     #print(data)
     #start = data.find("Fz(s) Fw(500) Ta(end)")
     #print(start)
@@ -46,13 +49,15 @@ def get_peg_from_url(url):
     #print(rate)
     rate = rate[0:len(rate)-6]
     #print(rate)
+    if(rate.rfind('N/A')):
+        return '777' # meanings N/A
     index = rate.rfind('>')
     #print(index)
     #print(len(rate))
     rate = rate[index+1:len(rate)]
     print(rate)
     #print('end')
-    return rate;
+    return rate
     
     #print(data.head())
     #print(data)
