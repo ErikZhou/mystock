@@ -33,6 +33,9 @@ def csv_sort(filename):
     data_list_0_5_1 = []
     data_list_1_2 = []
     data_list_2 = []
+    data_list_777 = []
+    data_list_888 = []
+    data_list_999 = []
     for i in range(df.shape[0]):
         # print(df.iloc[i,0])
         # process = "{:.2f}".format( 100.0 * i / df.shape[0] )
@@ -52,26 +55,22 @@ def csv_sort(filename):
                 data_list_0_5_1.append([ss[1], peg])
             elif peg <= 2:
                 data_list_1_2.append([ss[1], peg])
+            elif peg == 777:
+                data_list_777.append([ss[1], peg])
+            elif peg == 888:
+                data_list_888.append([ss[1], peg])
+            elif peg == 999:
+                data_list_999.append([ss[1], peg])
             else:
                 data_list_2.append([ss[1], peg])
-    df = pd.DataFrame(data_list, columns=['Code', 'PEG'])
-    df_0_5 = pd.DataFrame(data_list_0_5, columns=['Code', 'PEG'])
-    df_0_5_1 = pd.DataFrame(data_list_0_5_1, columns=['Code', 'PEG'])
-    df_1_2 = pd.DataFrame(data_list_1_2, columns=['Code', 'PEG'])
-    df_2 = pd.DataFrame(data_list_2, columns=['Code', 'PEG'])
-    final_df = df.sort_values(by='PEG')
-    final_df_0_5 = df_0_5.sort_values(by='PEG')
-    final_df_0_5_1 = df_0_5_1.sort_values(by='PEG')
-    final_df_1_2 = df_1_2.sort_values(by='PEG')
-    final_df_2 = df_2.sort_values(by='PEG')
-    # print(final_df)
-    final_df.to_csv('1_peg_' + filename + '.csv', sep='\t', encoding='utf-8')
-    df_to_csv(data_list, filename, all)
+    df_to_csv(data_list, filename, 'all')
     df_to_csv(data_list_0_5, filename, 0.5)
     df_to_csv(data_list_0_5_1, filename, '0.5-1')
     df_to_csv(data_list_1_2, filename, '1-2')
     df_to_csv(data_list_2, filename, '2')
-
+    df_to_csv(data_list_777, filename, 777)
+    df_to_csv(data_list_888, filename, 888)
+    df_to_csv(data_list_999, filename, 999)
     return
 
 
