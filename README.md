@@ -2,9 +2,11 @@
 mystock
 999 exception
 888 None no such page
+887 with $ e.g AMH$D, AMH$E
 777 N/A
 
 https://www.barchart.com/stocks/indices/sp/sp100?page=all&viewName=main
+https://finance.yahoo.com/quote/aapl/key-statistics
 """
 
 1. python mystock.py

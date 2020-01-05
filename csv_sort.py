@@ -35,6 +35,7 @@ def csv_sort(filename):
     data_list_2 = []
     data_list_777 = []
     data_list_888 = []
+    data_list_887 = []
     data_list_999 = []
     for i in range(df.shape[0]):
         # print(df.iloc[i,0])
@@ -59,6 +60,8 @@ def csv_sort(filename):
                 data_list_777.append([ss[1], peg])
             elif peg == 888:
                 data_list_888.append([ss[1], peg])
+            elif peg == 887:
+                data_list_887.append([ss[1], peg])
             elif peg == 999:
                 data_list_999.append([ss[1], peg])
             else:
@@ -70,6 +73,7 @@ def csv_sort(filename):
     df_to_csv(data_list_2, filename, '2')
     df_to_csv(data_list_777, filename, 777)
     df_to_csv(data_list_888, filename, 888)
+    df_to_csv(data_list_887, filename, 887)
     df_to_csv(data_list_999, filename, 999)
     return
 

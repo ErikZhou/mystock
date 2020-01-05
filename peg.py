@@ -49,8 +49,11 @@ def get_peg_from_csv(filename, thread_index=-1):
         full_url = get_url(code)
         peg = 0.0
 
-        for x in range(1):
+        for x in range(3):
             try:
+                if code.find('$') >= 0 :
+                    peg = 887.0
+                    break
                 text = get_peg.get_peg_from_url(full_url)
                 peg = float(text.replace(" ", "")) * 1.00
                 break
@@ -58,7 +61,7 @@ def get_peg_from_csv(filename, thread_index=-1):
                 print('try no.', x)
                 # print ("error message!")
                 peg = 999.0
-                # time.sleep(10)
+                time.sleep(10)
 
         # time.sleep( 2 )
         s2 = "{:.2f}".format(peg)  # new
