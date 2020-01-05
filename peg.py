@@ -25,7 +25,7 @@ def get_url(name):
     return url;
 
 
-def get_peg_from_csv(filename):
+def get_peg_from_csv(filename, thread_index=-1):
     csv_filename = filename
     print('filename is ' + filename)
     df1 = pd.read_csv(csv_filename)
@@ -34,7 +34,10 @@ def get_peg_from_csv(filename):
     for i in range(df1.shape[0]):
         # print(df.iloc[i,0])
         process = "{:.2f}".format(100.0 * i / df1.shape[0])
-        print(df1.iloc[i, 0] + '\t' + process + '%[ i / total = ' + str(i) + ' / ' + str(df1.shape[0]) + ']')
+        log = df1.iloc[i, 0] + '\t' + process + '%[ i / total = ' + str(i) + ' / ' + str(df1.shape[0]) + ']'
+        if thread_index >= 0:
+            log = 'thread_index\t' + str(thread_index) + '\t' + log
+        print(log)
         # if i > 10:
         #   break
 
@@ -46,17 +49,16 @@ def get_peg_from_csv(filename):
         full_url = get_url(code)
         peg = 0.0
 
-        for x in range(2):
-            print('try no.', x)
+        for x in range(1):
             try:
                 text = get_peg.get_peg_from_url(full_url)
                 peg = float(text.replace(" ", "")) * 1.00
                 break
             except:
+                print('try no.', x)
                 # print ("error message!")
                 peg = 999.0
-                time.sleep(10)
-
+                # time.sleep(10)
 
         # time.sleep( 2 )
         s2 = "{:.2f}".format(peg)  # new
@@ -90,7 +92,7 @@ def main(argv):
             outputfile = arg
     print('Input file is "', inputfile)
     print('Output file is "', outputfile)
-    get_peg_from_csv(inputfile)
+    get_peg_from_csv(inputfile, 0)
 
 
 if __name__ == "__main__":

@@ -49,7 +49,7 @@ def get_peg_from_url(url):
     #print(rate)
     rate = rate[0:len(rate)-6]
     #print(rate)
-    if(rate.rfind('N/A')):
+    if(rate.rfind('N/A') > 0):
         return '777' # meanings N/A
     index = rate.rfind('>')
     #print(index)
