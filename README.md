@@ -23,3 +23,4 @@ merge csv result into one file
 
 ## test 
 python peg.py -i test.csv
+python get_peg_one_year.py -i test.csv 

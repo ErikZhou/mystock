@@ -74,7 +74,7 @@ def get_peg_from_csv(filename, thread_index=-1):
     # print(final_df)
     final_df.to_csv('peg_' + filename + '.csv', sep='\t', encoding='utf-8')
 
-    return;
+    return
 
 
 def main(argv):

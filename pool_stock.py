@@ -1,6 +1,7 @@
 from multiprocessing import Pool
 import os, time, random
 import peg
+import get_peg_one_year
 import glob
 
 
@@ -8,7 +9,8 @@ def long_time_task(index, filename):
     print('Run task %s (%s)...' % (index, os.getpid()))
     start = time.time()
     # time.sleep(random.random() * 3)
-    peg.get_peg_from_csv(filename, index)
+    #peg.get_peg_from_csv(filename, index)
+    get_peg_one_year.get_peg_from_csv(filename, index)
     end = time.time()
     print('Task %s runs %0.2f seconds.' % (index, (end - start)))
 

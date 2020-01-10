@@ -9,6 +9,9 @@ from selenium import webdriver
 import time
 import os
 import pathlib
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 URL = 'https://www.nasdaq.com/market-activity/stocks/qcom/price-earnings-peg-ratios'
 
@@ -41,7 +44,7 @@ def get_webpage(code, filename):
 
 def get_one_year_peg(code):
     peg = ''
-    filename = code + '.html'
+    filename = 'appdata/' + code + '.html'
     file = pathlib.Path(filename)
     if file.exists():
         print("File exist")
@@ -58,21 +61,64 @@ def get_one_year_peg(code):
 def save_url_to_file(url, filename):
     driver = webdriver.Firefox(executable_path='/usr/local/bin/geckodriver')
     get_html = filename  # "test.html"
-    # 打开文件，准备写入
-    f = open(get_html, 'wb')
-    # url = 'http://www.baidu.com'  # 这里填你要保存的网页的网址
     driver.get(url)
-    time.sleep(4)  # 保证浏览器响应成功后再进行下一步操作
+    time.sleep(20)  # 保证浏览器响应成功后再进行下一步操作
+    """
+    try:
+        element = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, '//*[@id="main-content"]'))
+        )
+
+    except:
+        print('Did not load')
+    finally:
+        driver.quit()
+    """
     # 写入文件
+    f = open(get_html, 'wb')
     f.write(driver.page_source.encode("utf-8", "ignore"))  # 忽略非法字符
     print('写入成功')
+    #driver.close()
     # 关闭文件
     f.close()
     return
 
 
+def get_peg_from_csv(filename, thread_index=-1):
+    csv_filename = filename
+    print('filename is ' + filename)
+    df1 = pd.read_csv(csv_filename)
+    data_list = []
+
+    for i in range(df1.shape[0]):
+        # print(df.iloc[i,0])
+        process = "{:.2f}".format(100.0 * i / df1.shape[0])
+        log = df1.iloc[i, 0] + '\t' + process + '%[ i / total = ' + str(i) + ' / ' + str(df1.shape[0]) + ']'
+        if thread_index >= 0:
+            log = 'thread_index\t' + str(thread_index) + '\t' + log
+        print(log)
+
+        code = df1.iloc[i, 0]
+        peg = 0.0
+        if code.find('$') >= 0 :
+            peg = 887.0
+
+        text = get_one_year_peg(code)
+        peg = float(text.replace(" ", "")) * 1.00
+        s2 = "{:.2f}".format(peg)  # new
+        # if peg > 0.001:
+        data_list.append([code, float(peg)])
+        # file.write(code + '\t\t' + s2 +'\n')
+
+    df2 = pd.DataFrame(data_list, columns=['Code', 'PEG'])
+    final_df = df2.sort_values(by='PEG')
+    # print(final_df)
+    final_df.to_csv('peg_' + filename + '.csv', sep='\t', encoding='utf-8')
+    return
+
+
 def main(argv):
-    code = ''
+    inputfile = ''
     outputfile = ''
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
@@ -84,14 +130,13 @@ def main(argv):
             print('test.py -i <inputfile> -o <outputfile>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
-            code = arg
+            inputfile = arg
         elif opt in ("-o", "--ofile"):
             outputfile = arg
-    print('code is "', code)
-    #print('Output file is "', outputfile)
+    print('Input file is "', inputfile)
+    print('Output file is "', outputfile)
 
-    peg = get_one_year_peg(code)
-    print('code=', code, ' peg=', peg)
+    get_peg_from_csv(inputfile, 0)
 
 
 if __name__ == "__main__":

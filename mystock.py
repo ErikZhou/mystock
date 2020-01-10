@@ -81,7 +81,7 @@ print('=======')
 print(df.shape)
 #for i in range(df.shape[0]):
 #    print(df.iloc[i,0])
-csv_splitter.split(open(csv_file, 'r'),',',200);
+csv_splitter.split(open(csv_file, 'r'),',',80) #200
 print('=======')
 
 """
