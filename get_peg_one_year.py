@@ -17,16 +17,14 @@ URL = 'https://www.nasdaq.com/market-activity/stocks/qcom/price-earnings-peg-rat
 
 COLUMNS = ['code', 'rate']
 
+
 def get_webpage(code, filename):
     print(filename)
     soup = bs4.BeautifulSoup(open(filename, encoding='utf-8'), "html.parser")
     # print(soup.prettify())
     # page = soup.findAll('div')
     # print(page)
-    # table = soup.find("div")  # Find the "table" tag in the page
-    # print(table)
     rows = soup.find_all("tr")  # Find all the "tr" tags in the table
-    cy_data = []
     for row in rows:
         # print(row)
         if str(row).find("Forecast 12 Month Forward PEG Ratio") > 0:
@@ -39,7 +37,8 @@ def get_webpage(code, filename):
             peg = str(cells)[index1 + len(findstr):index2]
             # print(cells)
             # print('\n')
-            return (code, peg)
+            return code, peg
+    return code, 999
 
 
 def get_one_year_peg(code):
@@ -54,34 +53,27 @@ def get_one_year_peg(code):
         save_url_to_file(url, filename)
 
     ret = get_webpage(code, filename)
-    print(ret)
+    print('ret is ', ret)
     peg = str(ret[1])
     return peg
+
 
 def save_url_to_file(url, filename):
     driver = webdriver.Firefox(executable_path='/usr/local/bin/geckodriver')
     get_html = filename  # "test.html"
     driver.get(url)
     time.sleep(10)  # 保证浏览器响应成功后再进行下一步操作
-    """
+    # noinspection PyBroadException
     try:
-        element = WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, '//*[@id="main-content"]'))
-        )
-
+        f = open(get_html, 'wb')
+        f.write(driver.page_source.encode("utf-8", "ignore"))  # 忽略非法字符
+        print('写入成功')
+        f.close()
     except:
-        print('Did not load')
+        print('except')
     finally:
-        driver.quit()
-    """
-    # 写入文件
-    f = open(get_html, 'wb')
-    f.write(driver.page_source.encode("utf-8", "ignore"))  # 忽略非法字符
-    print('写入成功')
-    #driver.quit()
-    driver.close()
-    # 关闭文件
-    f.close()
+        # driver.quit()
+        driver.close()
     return
 
 
@@ -101,7 +93,7 @@ def get_peg_from_csv(filename, thread_index=-1):
 
         code = df1.iloc[i, 0]
         peg = 0.0
-        if code.find('$') >= 0 :
+        if code.find('$') >= 0:
             peg = 887.0
 
         text = get_one_year_peg(code)
