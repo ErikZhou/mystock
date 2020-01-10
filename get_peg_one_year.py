@@ -62,7 +62,7 @@ def save_url_to_file(url, filename):
     driver = webdriver.Firefox(executable_path='/usr/local/bin/geckodriver')
     get_html = filename  # "test.html"
     driver.get(url)
-    time.sleep(20)  # 保证浏览器响应成功后再进行下一步操作
+    time.sleep(10)  # 保证浏览器响应成功后再进行下一步操作
     """
     try:
         element = WebDriverWait(driver, 10).until(
@@ -78,7 +78,8 @@ def save_url_to_file(url, filename):
     f = open(get_html, 'wb')
     f.write(driver.page_source.encode("utf-8", "ignore"))  # 忽略非法字符
     print('写入成功')
-    #driver.close()
+    #driver.quit()
+    driver.close()
     # 关闭文件
     f.close()
     return
