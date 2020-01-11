@@ -20,6 +20,13 @@ COLUMNS = ['code', 'rate']
 
 def get_webpage(code, filename):
     print(filename)
+    file = pathlib.Path(filename)
+    if file.exists():
+        print("File exist")
+    else:
+        print("File not exist")
+        return code, 999
+
     soup = bs4.BeautifulSoup(open(filename, encoding='utf-8'), "html.parser")
     # print(soup.prettify())
     # page = soup.findAll('div')
@@ -61,10 +68,10 @@ def get_one_year_peg(code):
 def save_url_to_file(url, filename):
     driver = webdriver.Firefox(executable_path='/usr/local/bin/geckodriver')
     get_html = filename  # "test.html"
-    driver.get(url)
-    time.sleep(10)  # 保证浏览器响应成功后再进行下一步操作
     # noinspection PyBroadException
     try:
+        driver.get(url)
+        time.sleep(20)  # 保证浏览器响应成功后再进行下一步操作
         f = open(get_html, 'wb')
         f.write(driver.page_source.encode("utf-8", "ignore"))  # 忽略非法字符
         print('写入成功')
