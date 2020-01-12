@@ -95,7 +95,7 @@ def get_peg_from_csv(filename, thread_index=-1):
         process = "{:.2f}".format(100.0 * i / df1.shape[0])
         log = df1.iloc[i, 0] + '\t' + process + '%[ i / total = ' + str(i) + ' / ' + str(df1.shape[0]) + ']'
         if thread_index >= 0:
-            log = 'thread_index\t' + str(thread_index) + '\t' + log
+            log = 'filename is ' + filename + '\tthread_index\t' + str(thread_index) + '\t' + log
         print(log)
 
         code = df1.iloc[i, 0]

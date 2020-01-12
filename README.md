@@ -7,13 +7,14 @@ mystock
 
 https://www.barchart.com/stocks/indices/sp/sp100?page=all&viewName=main
 https://finance.yahoo.com/quote/aapl/key-statistics
+https://www.nasdaq.com/market-activity/stocks/qcom/price-earnings-peg-ratios
 """
 
 1. python mystock.py
 get all code from 
 and split into files with 200 for each
 
-2. python pool_stock.py 
+2. python pool.py 
 using process poll to get peg for each code
 
 3. python csv_merge.py 
