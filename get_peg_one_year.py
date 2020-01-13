@@ -48,10 +48,13 @@ def get_webpage(code, filename):
     return code, 999
 
 
-def get_one_year_peg(code):
+def get_one_year_peg(code, delete_file=False):
     peg = ''
     filename = 'appdata/' + code + '.html'
     file = pathlib.Path(filename)
+    if delete_file:
+        if os.path.exists(filename):
+            os.remove(filename)
     if file.exists():
         print("File exist")
     else:
@@ -104,6 +107,10 @@ def get_peg_from_csv(filename, thread_index=-1):
             peg = 887.0
 
         text = get_one_year_peg(code)
+
+        if float(text.replace(" ", "")) == 999:
+            text = get_one_year_peg(code, True)  # try it again
+
         peg = float(text.replace(" ", "")) * 1.00
         s2 = "{:.2f}".format(peg)  # new
         # if peg > 0.001:
