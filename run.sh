@@ -3,13 +3,24 @@
 #python3 peg.py
 #python3 peg.py
 
-MY_MESSAGE=""
-echo $MY_MESSAGE
-MY_MESSAGE+="python peg.py -i output_1.csv"
-for (( c=2; c<=44; c++ ))
-do  
-   #echo "Welcome output_$c.csv times"
-    MY_MESSAGE+=" & python peg.py -i output_"$c".csv"
-done
+MY_MESSAGE="rm -rf *.csv"
 echo $MY_MESSAGE
 $MY_MESSAGE
+
+MY_MESSAGE="python mystock.py"
+echo $MY_MESSAGE
+$MY_MESSAGE
+
+MY_MESSAGE="python pool.py"
+echo $MY_MESSAGE
+$MY_MESSAGE
+
+MY_MESSAGE="python csv_merge.py"
+echo $MY_MESSAGE
+$MY_MESSAGE
+
+MY_MESSAGE="python csv_sort.py"
+echo $MY_MESSAGE
+$MY_MESSAGE
+
+

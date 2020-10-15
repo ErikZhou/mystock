@@ -10,6 +10,11 @@ https://finance.yahoo.com/quote/aapl/key-statistics
 https://www.nasdaq.com/market-activity/stocks/qcom/price-earnings-peg-ratios
 """
 
+## run
+./run.sh
+
+## steps
+
 1. python mystock.py
 get all code from 
 and split into files with 200 for each
@@ -23,5 +28,5 @@ merge csv result into one file
 4. python csv_sort.py 
 
 ## test 
-python peg.py -i test.csv
-python get_peg_one_year.py -i test.csv 
+python peg.py -i data/test.csv
+python get_peg_one_year.py -i data/test.csv 
