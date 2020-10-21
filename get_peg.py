@@ -2,6 +2,7 @@ import bs4          # The most important library for us, see the note below
 import requests     # Requests will allow us to access the website via HTTP requests
 import pandas as pd # A standard tabular data manipulation library
 
+URL = 'https://finance.yahoo.com/quote/fang/key-statistics'
 URL = 'https://finance.yahoo.com/quote/aapl/key-statistics'
 
 def get_webpage(url):
@@ -33,6 +34,20 @@ def get_rate(url):
     for row in ratio:
         print(row)
 
+
+def get_data(data, start_key, end_key, length):
+    start = data.find(start_key)
+    data1 = data[start+ len(start_key) : start + len(start_key)+ length]
+    data2 = ''
+    if end_key == '':
+        data2 = data1
+    else: 
+        end = data1.find(end_key)
+        data2 = data1[:end]
+    #print(data2)
+    return data2
+
+
 #if __name__ == "__main__":
 def get_peg_from_url(url):
     #print('begin')
@@ -43,21 +58,23 @@ def get_peg_from_url(url):
         return '888' # meanings not found the page
 
     #print(data)
-    #start = data.find("Fz(s) Fw(500) Ta(end)")
-    #print(start)
-    rate = data[-20:]
-    #print(rate)
-    rate = rate[0:len(rate)-6]
-    #print(rate)
+    #print('\n')
+    start_key = 'Ta(c) Pstart(10px) Miw(60px) Miw(80px)--pnclg Bgc($lv1BgColor)'
+    end_key = '</td>'
+    data1 = get_data(data, start_key, end_key, 100)
+
+    start_key = '>'
+    end_key = ''
+    data2 = get_data(data1, start_key, end_key, 100)
+    #print(data1)
+    rate = data2
     if(rate.rfind('N/A') > 0):
         return '777' # meanings N/A
-    index = rate.rfind('>')
-    #print(index)
-    #print(len(rate))
-    rate = rate[index+1:len(rate)]
     print(rate)
-    #print('end')
     return rate
     
     #print(data.head())
     #print(data)
+#unit test
+#get_peg_from_url(URL)
+
